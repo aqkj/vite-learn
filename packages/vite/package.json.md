@@ -68,16 +68,28 @@
   "homepage": "https://vitejs.dev",
   "funding": "https://github.com/vitejs/vite?sponsor=1",
   "scripts": {
+    // rimraf命令来源rimraf包用于删除操作
+    // 删除dist文件夹后打包bundle
     "dev": "rimraf dist && pnpm run build-bundle -w",
+    // 删除dist文件夹后顺序执行build-bundle和build-types命令
     "build": "rimraf dist && run-s build-bundle build-types",
+    // rollup打包命令，指定配置文件 rollup.config.ts --configPlugin参数typescript可以允许使用ts来编写配置文件
     "build-bundle": "rollup --config rollup.config.ts --configPlugin typescript",
+    // run-s顺序执行build-types-temp，build-types-roll，build-types-check 三个命令
     "build-types": "run-s build-types-temp build-types-roll build-types-check",
+    // 仅创建声明文件 导出目录到temp文件夹 -p 指定项目路径为 src/node文件夹
     "build-types-temp": "tsc --emitDeclarationOnly --outDir temp -p src/node",
+    // 使用rollup打包命令 指定配置rollup.dts.config.ts 使用typescript编写配置，打包完毕删除temp文件夹
     "build-types-roll": "rollup --config rollup.dts.config.ts --configPlugin typescript && rimraf temp",
+    // 执行tsc编译 指定项目配置文件tsconfig.check.json
     "build-types-check": "tsc --project tsconfig.check.json",
+    // 进行类型检查，tsc编译命令并不生成文件
     "typecheck": "tsc --noEmit",
+    // 执行eslint检测命令，--cache进行缓存, --ext指定文件后缀，src/**指定检测路径
     "lint": "eslint --cache --ext .ts src/**",
+    // 格式化替换文件内容，使用缓存，解析器使用typescript，匹配为src/**/*.ts文件
     "format": "prettier --write --cache --parser typescript \"src/**/*.ts\"",
+    // 预发布处理 执行build打包命令
     "prepublishOnly": "npm run build"
   },
   "//": "READ CONTRIBUTING.md to understand what to put under deps vs. devDeps!",
