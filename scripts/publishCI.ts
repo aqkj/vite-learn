@@ -1,3 +1,4 @@
+// 发布包到npm用
 import { publish } from '@vitejs/release-scripts'
 
 // Check the tag passed in CI, and skip provenance if tag has `@` due to

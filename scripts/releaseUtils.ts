@@ -5,7 +5,12 @@ import colors from 'picocolors'
 import type { Options as ExecaOptions, ExecaReturnValue } from 'execa'
 import { execa } from 'execa'
 import fs from 'fs-extra'
-
+/**
+ * 用于执行命令
+ * @param bin 命令
+ * @param args 参数
+ * @param opts 配置信息
+ */
 export async function run(
   bin: string,
   args: string[],
@@ -13,7 +18,10 @@ export async function run(
 ): Promise<ExecaReturnValue> {
   return execa(bin, args, { stdio: 'inherit', ...opts })
 }
-
+/**
+ * 获取最后的tag标签
+ * @param pkgName 包名
+ */
 export async function getLatestTag(pkgName: string): Promise<string> {
   const tags = (await run('git', ['tag'], { stdio: 'pipe' })).stdout
     .split(/\n/)
@@ -25,7 +33,10 @@ export async function getLatestTag(pkgName: string): Promise<string> {
       semver.rcompare(a.slice(prefix.length), b.slice(prefix.length)),
     )[0]
 }
-
+/**
+ * 记录最近的提交
+ * @param pkgName 包名
+ */
 export async function logRecentCommits(pkgName: string): Promise<void> {
   const tag = await getLatestTag(pkgName)
   if (!tag) return
@@ -53,7 +64,9 @@ export async function logRecentCommits(pkgName: string): Promise<void> {
   )
   console.log()
 }
-
+/**
+ * 更新模版版本
+ */
 export async function updateTemplateVersions(): Promise<void> {
   const viteVersion = fs.readJSONSync('packages/vite/package.json').version
   if (/beta|alpha|rc/.test(viteVersion)) return
