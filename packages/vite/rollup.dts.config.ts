@@ -1,3 +1,4 @@
+// 在build-types-temp生成types文件后后执行此打包命令
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { findStaticImports } from 'mlly'
